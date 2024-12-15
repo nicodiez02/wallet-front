@@ -1,0 +1,10 @@
+.home-body {
+  background-image: url(/images/home.png);
+  background-size: cover;
+  background-position: center 25%;
+  background-repeat: no-repeat;
+}
+
+.container-home {
+  padding: 75px 50px;
+}
