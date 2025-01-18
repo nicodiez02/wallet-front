@@ -1,40 +1,56 @@
 import Link from "next/link";
-import React from "react";
+import React, { MouseEventHandler, PropsWithChildren } from "react";
 
 export enum ButtonType {
-  PRINCIPAL,
+  PRIMARY,
   SECONDARY,
+  TERCIARY,
 }
 
 export enum ButtonElement {
   Ancor,
   Button,
+  Submit,
 }
 
-interface ButtonProps {
-  text: string;
+export interface ButtonProps {
   type: ButtonType;
   fontBold: boolean;
+  text: string;
   element: ButtonElement;
+  height?: string;
+  leading?: string;
+  fontSize?: string;
+  width?: string;
+  disabled?: boolean;
   link?: string;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
-export const Button: React.FC<ButtonProps> = ({
-  text,
-  type,
-  fontBold,
-  link,
-  element,
-}) => {
-  const style: Record<ButtonType, string> = {
-    [ButtonType.PRINCIPAL]: "border border-secondary rounded-md text-secondary",
-    [ButtonType.SECONDARY]: "border text-principal bg-secondary rounded-md border-transparent",
+export const Button: React.FC<ButtonProps> = ({ type, text, fontSize, leading, disabled, fontBold, link, element, height, width, onClick }) => {
+  const types: Record<ButtonType, string> = {
+    [ButtonType.PRIMARY]: "border border-secondary rounded-[10px] text-secondary lg:w-[360px]",
+    [ButtonType.SECONDARY]: "border text-primary bg-secondary rounded-[10px] border-transparent lg:w-[360px]",
+    [ButtonType.TERCIARY]: "border text-primary bg-white rounded-[10px] border-transparent lg:w-[360px]",
   };
-  const styles = `leading-10 px-5 h-10 ${style[type]} ${fontBold ? "font-bold" : ""}`;
+  const styles = `text-center ${width ?? "w-full"} ${fontSize ?? ""} ${leading ?? ""} px-5 py-[14px] ${height ?? ""} ${types[type]} ${fontBold ? "font-bold" : ""}`;
 
   const render: Record<ButtonElement, JSX.Element> = {
-    [ButtonElement.Ancor]: <Link href={link ?? "/"} className={styles}>{text}</Link>,
-    [ButtonElement.Button]: <button className={styles}>{text}</button>,
+    [ButtonElement.Ancor]: (
+      <Link href={link ?? "/"} className={styles}>
+        {text}
+      </Link>
+    ),
+    [ButtonElement.Button]: (
+      <button type="button" disabled={disabled ?? false} onClick={onClick ? onClick : undefined} className={styles}>
+        {text}
+      </button>
+    ),
+    [ButtonElement.Submit]: (
+      <button disabled={disabled ?? false} type="submit" className={styles}>
+        {text}
+      </button>
+    ),
   };
 
   return render[element];

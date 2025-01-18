@@ -3,13 +3,13 @@ import React, { PropsWithChildren } from "react";
 import { Nav } from "./nav";
 
 interface LayoutProps extends PropsWithChildren {
-  type?: LayoutType;
+  nav: () => JSX.Element;
 }
 
-export const Layout: React.FC<LayoutProps> = ({ children, type }) => {
+export const Layout: React.FC<LayoutProps> = ({ children, nav }) => {
   return (
     <>
-      <Nav type={type ?? LayoutType.PRIMARY} />
+      {nav()}
 
       <main className="flex-1 z-10 relative">{children}</main>
 

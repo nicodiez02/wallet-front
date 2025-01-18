@@ -32,7 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased flex flex-col min-h-screen">{children}</body>
+      <body className="antialiased flex flex-col min-h-screen bg-primary">{children}</body>
     </html>
   );
 }

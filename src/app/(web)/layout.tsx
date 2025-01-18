@@ -1,14 +1,9 @@
-import { Layout } from "@/components/layout"; // El layout que usas también en `(web)`
-import { LayoutType } from "@/types/layout.types"; // Si lo usas para definir tipos
+import { Layout } from "@/components/layout";
+import { WebNav } from "@/components/web_nav";
+import { LayoutType } from "@/types/layout.types";
 
-export default function WebLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <Layout type={LayoutType.SECONDARY}> {/* Layout para rutas en /web/* */}
-      {children}
-    </Layout>
-  );
+export default function WebLayout({ children }: { children: React.ReactNode }) {
+  const webNav = () => <WebNav type={LayoutType.SECONDARY} />;
+
+  return <Layout nav={webNav}>{children}</Layout>;
 }

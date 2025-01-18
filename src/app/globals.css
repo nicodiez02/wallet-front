@@ -15,7 +15,7 @@
 }
 
 @font-face {
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   src: url("/fonts/OpenSans.ttf");
 }
 
@@ -23,4 +23,32 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+button:disabled {
+  opacity: 0.5;
+}
+
+h1 {
+  font-size: 24px;
+  font-family: "Open Sans";
+}
+
+h2 {
+  font-size: 20px;
+  font-family: "Open Sans";
+}
+
+h3 {
+  font-size: 16px;
+  font-family: "Open Sans";
+}
+
+h3 {
+  font-size: 14px;
+  font-family: "Open Sans";
+}
+
+p {
+  font-family: "Open Sans";
 }
