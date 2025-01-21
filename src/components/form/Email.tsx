@@ -11,7 +11,7 @@ export interface EmailProps {
 
 export const Email: React.FC<EmailProps> = ({ useFormHandler, statusHandler }) => {
   const schema = schemas[Inputs.email];
-  const { register, watch } = useFormContext();
+  const { register, watch, formState } = useFormContext();
   const { onBlur, onFocus, message, status } = useValidation();
   const value: string = watch("email");
 
@@ -20,6 +20,12 @@ export const Email: React.FC<EmailProps> = ({ useFormHandler, statusHandler }) =
       statusHandler(status);
     }
   }, [status]);
+
+  useEffect(() => {
+    if (formState.isSubmitted) {
+      onBlur(schema, value);
+    }
+  }, [formState]);
 
   return (
     <>

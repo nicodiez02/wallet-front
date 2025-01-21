@@ -1,20 +1,6 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
-import Image from "next/image";
-import { Button, ButtonElement, ButtonType } from "@/components/button";
-import { Layout } from "@/components/layout";
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+import StoreProvider from "./StoreProvider";
 
 export const metadata: Metadata = {
   title: "Digital Money",
@@ -31,8 +17,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased flex flex-col min-h-screen bg-primary">{children}</body>
-    </html>
+    <StoreProvider>
+      <html lang="en">
+        <body className="antialiased flex flex-col min-h-screen bg-primary">{children}</body>
+      </html>
+    </StoreProvider>
   );
 }

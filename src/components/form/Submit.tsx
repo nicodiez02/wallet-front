@@ -8,12 +8,12 @@ interface SubmitButtonProps {
 }
 
 export const Submit = ({ label, type, disabled }: SubmitButtonProps) => {
-  const commonConfig = { fontBold: true, element: ButtonElement.Submit, disabled: disabled ?? false };
+  const commonConfig = { fontBold: true, element: ButtonElement.Submit, disabled: disabled ?? false, text: label };
   const config: Record<ButtonType, ButtonProps> = {
     [ButtonType.TERCIARY]: { ...commonConfig, type: ButtonType.TERCIARY },
     [ButtonType.PRIMARY]: { ...commonConfig, type: ButtonType.PRIMARY },
     [ButtonType.SECONDARY]: { ...commonConfig, type: ButtonType.SECONDARY },
   };
 
-  return <Button {...config[type]}>{label}</Button>;
+  return <Button {...config[type]} />;
 };

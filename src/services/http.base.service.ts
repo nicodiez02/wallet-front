@@ -1,6 +1,4 @@
-import { AccessDeniedError } from "@/error/access-denied.class";
 import { HttpError } from "@/error/http-custom.class";
-import { NotFoundError } from "@/error/notfound.class";
 
 export class HttpBase {
   protected publicAPI: string = "";

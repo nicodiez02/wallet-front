@@ -1,6 +1,4 @@
-import { LayoutType } from "@/types/layout.types";
 import React, { PropsWithChildren } from "react";
-import { Nav } from "./nav";
 
 interface LayoutProps extends PropsWithChildren {
   nav: () => JSX.Element;

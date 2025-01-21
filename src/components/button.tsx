@@ -29,9 +29,9 @@ export interface ButtonProps {
 
 export const Button: React.FC<ButtonProps> = ({ type, text, fontSize, leading, disabled, fontBold, link, element, height, width, onClick }) => {
   const types: Record<ButtonType, string> = {
-    [ButtonType.PRIMARY]: "border border-secondary rounded-[10px] text-secondary lg:w-[360px]",
-    [ButtonType.SECONDARY]: "border text-primary bg-secondary rounded-[10px] border-transparent lg:w-[360px]",
-    [ButtonType.TERCIARY]: "border text-primary bg-white rounded-[10px] border-transparent lg:w-[360px]",
+    [ButtonType.PRIMARY]: `border border-secondary rounded-[10px] text-secondary ${width ?? "lg:w-[360px]"}`,
+    [ButtonType.SECONDARY]: `border text-primary bg-secondary rounded-[10px] border-transparent ${width ?? "lg:w-[360px]"}`,
+    [ButtonType.TERCIARY]: `border text-primary bg-white rounded-[10px] border-transparent ${width ?? "lg:w-[360px]"}`,
   };
   const styles = `text-center ${width ?? "w-full"} ${fontSize ?? ""} ${leading ?? ""} px-5 py-[14px] ${height ?? ""} ${types[type]} ${fontBold ? "font-bold" : ""}`;
 

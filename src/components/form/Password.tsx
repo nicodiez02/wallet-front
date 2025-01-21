@@ -11,8 +11,8 @@ export interface PasswordProps {
 
 export const Password: React.FC<PasswordProps> = ({ useFormHandler, statusHandler }) => {
   const schema = schemas[Inputs.password];
-  const { register, watch } = useFormContext();
-  const { onBlur, onFocus, status, message } = useValidation();
+  const { register, watch, formState } = useFormContext();
+  const { onBlur, onFocus, status } = useValidation();
   const value: string = watch(Inputs.password);
 
   useEffect(() => {
@@ -21,10 +21,16 @@ export const Password: React.FC<PasswordProps> = ({ useFormHandler, statusHandle
     }
   }, [status]);
 
+  useEffect(() => {
+    if (formState.isSubmitted) {
+      onBlur(schema, value);
+    }
+  }, [formState]);
+
   return (
     <>
-      <div className="flex flex-col gap-2 w-full lg:items-center">
-        <input
+      <div className="flex flex-col gap-2 w-full lg:w-[360px]">
+      <input
           {...register(Inputs.password)}
           onFocus={onFocus}
           onBlur={() => onBlur(schema, value)}

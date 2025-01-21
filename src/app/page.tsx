@@ -22,9 +22,14 @@ export default function Home() {
 
             <hr className="border-secondary border-t-4 w-25 my-17 lg:hidden" />
 
-            <p className="text-secondary text-21.5 lg:text-[34px]">
+            
+            <p className="hidden sm:block text-secondary text-21.5 lg:text-[34px]">
               Tu nueva <span className="font-semibold">billetera virtual</span>
             </p>
+            <p className="block sm:hidden text-secondary text-21.5 lg:text-[34px]">
+              Tu nueva <br/> <span className="font-semibold">billetera virtual</span>
+            </p>
+
           </div>
 
           <div className="flex flex-col lg:flex-row lg:justify-center gap-4 z-10 px-18 bg-secondary rounded-t-30 pb-[19px] relative">

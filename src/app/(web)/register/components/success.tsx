@@ -1,44 +1,52 @@
 "use client";
 import { Error } from "@/components/error";
-import { MouseEventHandler, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore from "swiper";
 import "swiper/css";
-import { PasswordForm, EmailForm } from "../../login/components/";
 import { User } from "@/services/user.service";
 import { Credentials } from "@/types/user.type";
 import { NotFoundError } from "@/error/notfound.class";
-import { PASSWORD, UNEXPECTED, USER_NOT_FOUND } from "@/types/errors.messages";
-import { Code } from "./code";
+import { EMAIL, PASSWORD, UNEXPECTED, USER_NOT_FOUND } from "@/types/errors.messages";
 import { ButtonElement, ButtonProps, ButtonType } from "@/components/button";
 import { SucessMessage } from "./success_message";
+import { Email, EmailProps } from "@/components/form/Email";
 import { Password, PasswordProps } from "@/components/form/Password";
 import { OneStepForm } from "@/components/form/OneStepForm";
+import { Input, InputProps } from "@/components/form/Common";
+import { Inputs } from "@/types/form.types";
+import { useRouter } from "next/navigation";
 
 export const SuccesfulyRegistered = () => {
   const methods = useForm<Credentials>();
   const [message, setMessage] = useState("");
+  const [disabled, setDisabled] = useState(false);
   const { handleSubmit } = methods;
   const swiperRef = useRef<SwiperCore | null>(null);
+  const router = useRouter();
+
   const onSubmit = async (data: Credentials) => {
     try {
-      const user = new User();
-      await user.login(data);
+      setDisabled(true);
+
+      setTimeout(() => {
+        router.push("/login");
+      }, 2000);
     } catch (error) {
       console.log("🚀 ~ onSubmit ~ error:", error);
-      if (error instanceof NotFoundError) {
-        setMessage(USER_NOT_FOUND);
-      } else {
-        setMessage(UNEXPECTED);
-      }
+    } finally {
+      setDisabled(false);
     }
   };
 
-  const submit: ButtonProps = { type: ButtonType.SECONDARY, element: ButtonElement.Submit, fontBold: true, text: "Ingresar" };
-  const button: ButtonProps = { type: ButtonType.SECONDARY, element: ButtonElement.Button, fontBold: true, text: "Continuar" };
   const next = () => swiperRef?.current?.slideNext();
+  const submit: ButtonProps = { type: ButtonType.SECONDARY, element: ButtonElement.Button, onClick: handleSubmit(onSubmit), fontBold: true, text: "Ingresar" };
+  const button: ButtonProps = { onClick: next, type: ButtonType.SECONDARY, element: ButtonElement.Button, fontBold: true, text: "Continuar" };
+
+  const email = (props: EmailProps) => <Email {...props} />;
   const password = (props: PasswordProps) => <Password {...props} />;
+  const code = (props: InputProps) => <Input {...props} attributes={{ type: "number", placeholder: "Código", name: Inputs.code }} />;
 
   return (
     <FormProvider {...methods}>
@@ -51,16 +59,16 @@ export const SuccesfulyRegistered = () => {
           </SwiperSlide>
 
           <SwiperSlide>
-            <EmailForm button={[{ ...button, onClick: next }]} />
+            <OneStepForm title={""} input={email} button={[button]} error={EMAIL} />
           </SwiperSlide>
 
           <SwiperSlide>
-            <OneStepForm input={password} button={[{ ...button, onClick: next }]} error={PASSWORD} />
+            <OneStepForm title={""} input={password} button={[button]} error={PASSWORD} />
           </SwiperSlide>
 
           <SwiperSlide>
-            <Code button={submit} />
-            {<Error message={message ?? ""} />}
+            <OneStepForm disabled={disabled} title={""} input={code} button={[submit]} error={PASSWORD} />
+            <Error message={message ?? ""} />
           </SwiperSlide>
         </Swiper>
       </form>

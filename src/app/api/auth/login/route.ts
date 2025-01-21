@@ -4,12 +4,12 @@ import { NotFoundError } from "@/error/notfound.class";
 import { RedisError } from "@/error/redis.class";
 import { http } from "@/services/http.service";
 import { Client } from "@/services/redis.service";
-import { LOGIN_ERRORS, REDIS_REFUSE, UNEXPECTED } from "@/types/errors.messages";
+import { REDIS_REFUSE, UNEXPECTED } from "@/types/errors.messages";
 import { Credentials, Token } from "@/types/user.type";
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
-const ONE_MINUTE = 60;
+const EXPIRE_TIME = 3600;
 
 export async function POST(request: NextRequest) {
   const body: Credentials = await request.json();
@@ -25,10 +25,10 @@ export async function POST(request: NextRequest) {
     const token = response.token;
     const sessionId = uuidv4();
     const now = new Date();
-    const expiresAt = new Date(now.getTime() + ONE_MINUTE * 1000).toUTCString();
+    const expiresAt = new Date(now.getTime() + EXPIRE_TIME * 1000).toUTCString();
     const cookie = `AuthCookie=${sessionId}; Domain=localhost; Secure; HttpOnly; Expires=${expiresAt}; Path=/`;
 
-    await client.set(sessionId, token, { EX: ONE_MINUTE });
+    await client.set(sessionId, token, { EX: EXPIRE_TIME });
     return new Response(JSON.stringify(email), {
       status: 200,
       headers: { "Set-Cookie": cookie },
@@ -63,8 +63,8 @@ export async function GET(request: Request) {
     client = await redis.connect();
 
     const { searchParams } = new URL(request.url);
-    const key = searchParams.get("key") ?? "";
-    const token = await client.get(key);
+    const sessionId = searchParams.get("key") ?? "";
+    const token = await client.get(sessionId);
     if (!token) throw new Error("Session Expired");
     console.log("🚀 ~ GET ~ token:", token);
 

@@ -6,6 +6,7 @@ export enum Inputs {
   repeat_password = "repeat_password",
   phone = "phone",
   dni = "dni",
+  code = "code",
 }
 
 export type ExtendedStatus = {
@@ -14,4 +15,4 @@ export type ExtendedStatus = {
 };
 
 export type Status = "VALID" | "INVALID" | "FOCUS";
-export type FormType = "SUBMIT" | "STEPPER"
+export type FormType = "SUBMIT" | "STEPPER";

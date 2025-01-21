@@ -10,7 +10,7 @@ export type InputAttributes = {
   name: Exclude<keyof typeof Inputs, "repeat_password">;
 };
 
-interface InputProps {
+export interface InputProps {
   attributes: InputAttributes;
   useFormHandler?: boolean;
   statusHandler?: (status: Status) => void;
@@ -19,8 +19,8 @@ interface InputProps {
 export const Input: React.FC<InputProps> = ({ useFormHandler, attributes, statusHandler }) => {
   const { name, type, placeholder } = attributes;
   const schema = schemas[name];
-  const { register, watch } = useFormContext();
-  const { onBlur, onFocus, status, message } = useValidation();
+  const { register, watch, formState } = useFormContext();
+  const { onBlur, onFocus, status } = useValidation();
   const error = useMemo(() => (status === "INVALID" ? "border-solid border border-red-500" : ""), [status]);
   const value: string = watch(name);
 
@@ -29,6 +29,12 @@ export const Input: React.FC<InputProps> = ({ useFormHandler, attributes, status
       statusHandler(status);
     }
   }, [status]);
+
+  useEffect(() => {
+    if (formState.isSubmitted) {
+      onBlur(schema, value);
+    }
+  }, [formState]);
 
   return (
     <>

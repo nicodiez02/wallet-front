@@ -1,6 +1,6 @@
 "use client";
 import { Error } from "@/components/error";
-import { useRef, useState } from "react";
+import {  useRef, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore from "swiper";
@@ -12,8 +12,10 @@ import { ButtonElement, ButtonProps, ButtonType } from "@/components/button";
 import { OneStepForm } from "@/components/form/OneStepForm";
 import { Password, PasswordProps } from "@/components/form/Password";
 import { Email, EmailProps } from "@/components/form/Email";
-import { useRouter } from "next/navigation"; // Importa el hook
+import { useRouter } from "next/navigation";
 import { HttpError } from "@/error/http-custom.class";
+import { useAppDispatch } from "@/lib/hooks";
+import { login } from "@/features/auth/authSlice";
 
 const EMAIL_TITLE = "¡Hola! Ingresá tu e-mail";
 const PASSWORD_TITLE = "Ingresá tu clave";
@@ -24,7 +26,8 @@ export default function Login() {
   const [disabled, setDisabled] = useState(false);
   const { handleSubmit } = methods;
   const swiperRef = useRef<SwiperCore | null>(null);
-  const router = useRouter(); // Usa el hook aquí
+  const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const onSubmit = async (data: Credentials) => {
     try {
@@ -32,8 +35,9 @@ export default function Login() {
 
       const user = new User();
       await user.login(data);
-      setMessage("");
 
+      dispatch(login());
+      setMessage("");
       router.push("/");
     } catch (error) {
       if (error instanceof HttpError) {
@@ -51,7 +55,7 @@ export default function Login() {
   const email = (props: EmailProps) => <Email {...props} />;
   const password = (props: PasswordProps) => <Password {...props} />;
   const submit: ButtonProps = { type: ButtonType.SECONDARY, element: ButtonElement.Button, fontBold: true, text: "Ingresar", onClick: handleSubmit(onSubmit) };
-  const button: ButtonProps = { type: ButtonType.SECONDARY, element: ButtonElement.Button, fontBold: false, text: "Continuar", onClick: next };
+  const button: ButtonProps = { type: ButtonType.SECONDARY, element: ButtonElement.Button, fontBold: true, text: "Continuar", onClick: next };
   const createAccount: ButtonProps = { type: ButtonType.TERCIARY, element: ButtonElement.Ancor, link: "/register", text: "Crear Cuenta", fontBold: true };
 
   return (
